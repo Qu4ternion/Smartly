@@ -5,7 +5,6 @@ Created on Mon Jan 10 13:52:59 2022
 @author: Acer
 """
 
-
 from sklearn.cluster import KMeans
 import json
 
@@ -15,7 +14,8 @@ class kmeans:
     
     def cluster(X, stems):
         
-        km = KMeans(n_clusters=2, max_iter=200, n_init=10)
+        # K-means:
+        km = KMeans(n_clusters=6, max_iter=200, n_init=10)
         km = km.fit(X)
         
         
@@ -35,7 +35,6 @@ class kmeans:
             
             else:
                 result[ int(label[0]) ] = [label[1]]
-        
         
         
         # Format in a JSON:

@@ -11,15 +11,15 @@ from tf_idf import TFIDF
 from model import kmeans
 from metrics import Metrics
 from io import StringIO 
+import matplotlib.pyplot as plt
+from sklearn.cluster import KMeans
 
 
 # Add title:
 st.title('Smartly API:')
 
-
 # Add a subheader:
 st.subheader('Clustering de phrases inconnues')
-
 
 st.write('Téléchargez votre fichier texte ci-dessous:')
 
@@ -30,21 +30,25 @@ file = st.file_uploader('Fichiers à télécharger:')
 # Uploaded file handling:
 if file is not None:
 
+    # Downloaded file:
     data = StringIO(file.getvalue().decode("latin1"))
+    
+    # Pre-processing data:
     cleaned = Preprocessor.preprocess(data, data)
+    
+    # Vectorisation TF-IDF:
     features = TFIDF.Vectorize(cleaned, cleaned)
+    
+    # Running model:
     clustering = kmeans.cluster(features, cleaned)
     
     # Result:
     st.subheader('API JSON response:')
     st.write(clustering)
-    
-    
-    import matplotlib.pyplot as plt
-    from sklearn.cluster import KMeans
 
     
-    st.subheader('API JSON response:')
+    # Metrics 
+    st.subheader('Metrics:')
     
     Sum_of_squared_distances = []
     K = range(2,10)
@@ -53,11 +57,10 @@ if file is not None:
        km = km.fit(features)
        Sum_of_squared_distances.append(km.inertia_)
     
-    
+    # Graph:
     fig, ax = plt.subplots()
     ax.plot(K, Sum_of_squared_distances, 'bx-')
     ax.set_xlabel('Groupes K')
     ax.set_ylabel('Sommes des carrés')
-
     ax.set_title('Méthode du coude pour nombre optimal de groupes')
     st.pyplot(fig)
