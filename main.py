@@ -21,9 +21,17 @@ from   metrics         import Metrics
 from   io              import StringIO 
 from   sklearn.cluster import KMeans
 from   collections     import Counter
+from   PIL             import Image
+
+
+# Add logo:
+image = Image.open(r'C:\Users\Acer\Desktop\Smartly\img\big-blue.png')
+st.image(image)
 
 
 # Add title:
+st.write(' ')
+st.write(' ')
 st.title('Smartly API:')
 
 # Add a subheader:
