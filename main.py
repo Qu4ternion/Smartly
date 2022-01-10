@@ -63,8 +63,37 @@ if file is not None:
     st.write(clustering)
 
     
+    st.subheader('Fréquence des mots:')
+    
+    fig, ax = plt.subplots()
+    
+    # Dictionary that holds clusters and words in each cluster:
+    d = json.loads(clustering)
+    
+    
+    # Plot graph for each cluster:
+    for cluster in d.keys():
+        
+        # Count words within each of the clusters:
+        word_counts = Counter(d[cluster])
+        
+        # Sort them from most to least frequent:
+        word_counts = {k: v for k, v in sorted(word_counts.items(), key=lambda item: item[1], reverse=True)}
+        
+        # Make graph:
+        fig, ax = plt.subplots()
+        ax.bar(list(word_counts.keys())[0:5], list(word_counts.values())[0:5],width = 0.4)
+        ax.set_xlabel('Mots les plus fréquents')
+        ax.set_ylabel('Fréquence')
+        ax.set_title(f'Cluster {cluster}')
+        
+        # Display it on streamlit:
+        st.pyplot(fig)
+        
     # Metrics 
-    st.subheader('Metrics:')
+    st.write(' ')
+    st.write(' ')
+    st.subheader('Nombre de clusters:')
     
     # Empty list to store inertia:
     Sum_of_squared_distances = []
@@ -81,25 +110,3 @@ if file is not None:
     ax.set_ylabel('Sommes des carrés')
     ax.set_title('Méthode du coude pour nombre optimal de groupes')
     st.pyplot(fig)
-
-    
-    st.subheader('Fréquence des mots:')
-    
-    fig, ax = plt.subplots()
-    
-    # Dictionary that holds clusters and words in each cluster:
-    d = json.loads(clustering)
-    
-    
-    
-    for cluster in d.keys():
-        
-        word_counts = Counter(d[cluster])
-        word_counts = {k: v for k, v in sorted(word_counts.items(), key=lambda item: item[1], reverse=True)}
-        
-        fig, ax = plt.subplots()
-        ax.bar(list(word_counts.keys())[0:5], list(word_counts.values())[0:5], color ='maroon',width = 0.4)
-        ax.set_xlabel('Mots les plus fréquents')
-        ax.set_ylabel('Fréquence')
-        ax.set_title(f'Cluster {cluster}')
-        st.pyplot(fig)
